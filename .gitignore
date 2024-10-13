@@ -23,14 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-<<<<<<< HEAD
-.zip
-__MACOSX/
-package-lock.json
-FE.zip
-yarn.lock
-=======
 
 package-lock.json
 yarn.lock
->>>>>>> 6604c820cb35ff0b0fa167b28e958d723e4a719f
+
+.env

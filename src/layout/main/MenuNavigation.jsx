@@ -92,7 +92,8 @@ export default function MenuNavigation() {
           ) : (
             <Box
               display="flex"
-              onClick={signIn}
+              // onClick={signIn}
+              onClick={() => navigate("/login")}
               flexDirection="column"
               alignItems="center"
               justifyContent="center"

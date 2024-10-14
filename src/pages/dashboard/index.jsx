@@ -9,23 +9,33 @@ import CardStats from "../../components/chart/CardStats";
 import { AssignmentInd, Event, Favorite, Group } from "@mui/icons-material";
 import TagsRanking from "../../components/chart/TagsRanking";
 import EventRanking from "../../components/chart/EventRanking";
+import { getUsers } from "../../api/user";
+import { getEvents } from "../../api/event";
 
 const DashboardPage = () => {
   const [requests, setRequests] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [events, setEvents] = useState([]);
 
-  const getDataRequests = useCallback(async () => {
+  const getData = useCallback(async () => {
     try {
-      const response = await getRequests({ status: "join" });
+      const responseRequest = await getRequests({ status: "join" });
+      const responseUser = await getUsers();
+      const responseEvent = await getEvents();
 
-      setRequests(response);
+      console.log("responseRequest", responseRequest);
+
+      setUsers(responseUser.data);
+      setRequests(responseRequest.data);
+      setEvents(responseEvent.data);
     } catch (error) {
       console.warn(error);
     }
   }, [setRequests]);
 
-  // useEffect(() => {
-  //   getDataRequests();
-  // }, [getDataRequests]);
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   return (
     <>
@@ -39,17 +49,17 @@ const DashboardPage = () => {
         >
           <CardStats
             label="จำนวนผู้ใช้งาน"
-            value={240}
+            value={users.length}
             icon={<Group color="info" fontSize="large" />}
           />
           <CardStats
             label="จำนวนกิจกรรม"
-            value={100}
+            value={events.length}
             icon={<AssignmentInd color="warning" fontSize="large" />}
           />
           <CardStats
             label="การกดสนใจกิจกรรม"
-            value={770}
+            value={requests.length}
             icon={<Favorite color="error" fontSize="large" />}
           />
         </Box>
@@ -62,10 +72,12 @@ const DashboardPage = () => {
           }}
         >
           <MainCard>
-            <TagsRanking />
+            <Typography>แท็กยอดนิยม</Typography>
+            <TagsRanking events={requests.map((re) => re.event)} />
           </MainCard>
           <MainCard>
-            <EventRanking />
+            <Typography>กิจกรรมยอดนิยม</Typography>
+            <EventRanking events={requests.map((re) => re.event)} />
           </MainCard>
         </Box>
 
@@ -101,7 +113,7 @@ const DashboardPage = () => {
             />
           </Box>
         </MainCard> */}
-        <MainCard>
+        {/* <MainCard>
           <Typography variant="body1" gutterBottom>
             ผลประเมินควาสนใจ
           </Typography>
@@ -115,7 +127,7 @@ const DashboardPage = () => {
           >
             <RadarChartComp />
           </Box>
-        </MainCard>
+        </MainCard> */}
       </Stack>
     </>
   );

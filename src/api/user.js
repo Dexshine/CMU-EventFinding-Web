@@ -1,12 +1,12 @@
 import axiosInstance from "./axiosInstance";
 
-export const getProfile = async () => {
+export const getUsers = async () => {
   try {
-    const res = await axiosInstance.get(`/auth/profile`);
+    const res = await axiosInstance.get(`/user`);
 
     return res.data;
   } catch (error) {
-    console.error("Get Profile error:", error);
+    console.error("Get Users error:", error);
   }
 };
 

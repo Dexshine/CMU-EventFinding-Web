@@ -8,7 +8,7 @@ const Header = () => {
     <Box
       sx={{
         position: "absolute",
-        height: "450px",
+        height: "460px",
         width: "100%",
         backgroundImage: `linear-gradient(to top, #e9e9e8, transparent), url(${image})`,
         backgroundSize: "cover",

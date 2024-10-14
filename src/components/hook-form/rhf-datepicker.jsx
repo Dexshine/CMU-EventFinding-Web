@@ -3,7 +3,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const RHFDatePicker = ({ name, label, ...other }) => {
+const RHFDatePicker = ({ name, label, datePickerProps, ...other }) => {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +24,7 @@ const RHFDatePicker = ({ name, label, ...other }) => {
                   error: !!error,
                 },
               }}
+              {...datePickerProps}
             />
           </FormControl>
         );

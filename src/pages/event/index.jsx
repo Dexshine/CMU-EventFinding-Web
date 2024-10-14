@@ -1,24 +1,17 @@
-import { Box, Stack } from "@mui/material";
-import React, { useCallback } from "react";
-import EventContainer from "../../sections/event-container";
-import { MOCK_EVENTS } from "../../mock/_events";
-import { getEvents } from "../../api/event";
+import { Stack } from "@mui/material";
+import React from "react";
 
 const EventPage = () => {
-  const getData = useCallback(async () => {
-    try {
-      const response = await getEvents();
-      console.log(response);
-    } catch (error) {
-      console.warn(error);
-    }
-  }, []);
+  // const getData = useCallback(async () => {
+  //   try {
+  //     const response = await getEvents();
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.warn(error);
+  //   }
+  // }, []);
 
-  return (
-    <Stack spacing={4}>
-      <EventContainer title="กิจกรรมทั้งหมด" events={MOCK_EVENTS} />
-    </Stack>
-  );
+  return <Stack spacing={4}></Stack>;
 };
 
 export default EventPage;

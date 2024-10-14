@@ -1,20 +1,10 @@
-import * as React from "react";
-import { AppProvider, SignInPage } from "@toolpad/core";
+import { Google } from "@mui/icons-material";
+import { Avatar, Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import useAuth from "../../hooks/useAuth";
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { CMU_OAUTH_URL } from "../../config/config-variable";
-import { Google } from "@mui/icons-material";
-// preview-start
-const providers = [{ id: "google", name: "Google" }];
+import useAuth from "../../hooks/useAuth";
 
 // preview-end
 
@@ -35,17 +25,19 @@ export default function LoginPage() {
   // };
 
   const signIn = async () => {
-    const promise = await new Promise((resolve) => {
-      setTimeout(() => {
-        login();
+    try {
+      const promise = await new Promise((resolve) => {
+        setTimeout(() => {
+          login();
 
-        resolve();
-      }, 500);
-    });
+          resolve();
+        }, 500);
+      });
 
-    toast.success("เข้าสู่ระบบเรียบร้อยแล้ว");
-
-    // return promise;
+      toast.success("เข้าสู่ระบบเรียบร้อยแล้ว");
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   return (
@@ -72,8 +64,9 @@ export default function LoginPage() {
         }}
       >
         <Stack spacing={2}>
-          <Typography textAlign="center" variant="h5">
-            CMU | EVENT FINDING
+          <img src="/assets/images/logo.svg" width="100%" />
+          <Typography textAlign="center" variant="subtitle1">
+            Please login to continue
           </Typography>
           <Button
             sx={{ width: "400px" }}

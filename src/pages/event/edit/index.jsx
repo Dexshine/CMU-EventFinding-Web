@@ -39,7 +39,7 @@ const validationSchema = yup.object().shape({
   faculties: yup
     .array()
     .min(1, "กรุณาเลือกคณะของผู้ร่วมอย่างน้อย 1 คณะ")
-    .max(3, "เลือกคณะของผู้ร่วมได้สูงสุด 3 คณะ"),
+    .max(10, "เลือกคณะของผู้ร่วมได้สูงสุด 10 คณะ"),
   tags: yup
     .array()
     .min(1, "กรุณาเลือกประเภทกิจกรรมอย่างน้อย 1 ประเภท")
@@ -154,7 +154,7 @@ const EventCreateEditPage = () => {
     </Stack>
   );
 
-  const dispkayForm2 = (
+  const displayForm2 = (
     <Stack spacing={2}>
       <RHFUploadWrapper />
 
@@ -215,7 +215,7 @@ const EventCreateEditPage = () => {
           }}
         >
           <Box>{displayForm}</Box>
-          <Box>{dispkayForm2}</Box>
+          <Box>{displayForm2}</Box>
         </Box>
 
         <Stack direction="row" gap={2} justifyContent="end" alignItems="center">
@@ -249,3 +249,4 @@ const EventCreateEditPage = () => {
 };
 
 export default EventCreateEditPage;
+

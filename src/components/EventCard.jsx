@@ -1,10 +1,20 @@
-import { People } from "@mui/icons-material";
+import {
+  Cancel,
+  Delete,
+  People,
+  Remove,
+  RemoveCircle,
+} from "@mui/icons-material";
 import {
   Box,
+  Button,
   Card,
   CardActionArea,
+  CardActions,
   CardContent,
   CardMedia,
+  Chip,
+  IconButton,
   Stack,
   Typography,
   useTheme,
@@ -13,11 +23,68 @@ import React from "react";
 import { toDate } from "../utils/function/date";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-const EventCard = ({ title, id, tags = [], image, qty, date }) => {
+import { updateEvent } from "../api/event";
+import toast from "react-hot-toast";
+const EventCard = ({
+  title,
+  id,
+  tags = [],
+  image,
+  qty,
+  date,
+  end_date,
+  isCanCancel = false,
+  status,
+}) => {
   const theme = useTheme();
   const naigate = useNavigate();
 
-  const startDate = dayjs(); // Assuming start_date is the current date
+  const startDate = dayjs();
+
+  const handleCancel = async (ev) => {
+    toast((t) => {
+      console.log("t", t);
+
+      return (
+        <Stack spacing={2}>
+          <Typography variant="body1" fontSize="20px">
+            คุณแน่ใจหรือไม่ที่จะยกเลิกกิจกรรมนี้
+          </Typography>
+
+          <Box display="flex" justifyContent="flex-end" gap={2}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                toast.dismiss(t.id);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={async () => {
+                try {
+                  await updateEvent(id, { status: "cancel" });
+
+                  toast.success("Cancel event success");
+                } catch (error) {
+                  toast.error("Cancel event failed");
+                } finally {
+                  toast.dismiss(t.id);
+                }
+              }}
+            >
+              Confirm
+            </Button>
+          </Box>
+        </Stack>
+      );
+    });
+
+    ev.stopPropagation();
+  };
 
   return (
     <Card
@@ -27,6 +94,7 @@ const EventCard = ({ title, id, tags = [], image, qty, date }) => {
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: theme.palette.primary.main,
+        // position: "relative",
       }}
       onClick={() => naigate(`/event/${id}`)}
     >
@@ -43,7 +111,13 @@ const EventCard = ({ title, id, tags = [], image, qty, date }) => {
             borderRadius: "0 0 0 8px",
           }}
         >
-          จะเริ่มใน {dayjs(date).diff(startDate, "day")} วัน
+          {dayjs(end_date).isBefore(startDate) ? (
+            <>จบแล้ว</>
+          ) : dayjs(date).isAfter(startDate) ? (
+            <>จะเริ่มใน {dayjs(date).diff(startDate, "day")} วัน</>
+          ) : (
+            <>กำลังจัดกิจกรรม</>
+          )}
         </Box>
         <CardMedia component="img" height="140px" image={image} alt={title} />
         <CardContent sx={{ paddingTop: "5px" }}>
@@ -92,8 +166,34 @@ const EventCard = ({ title, id, tags = [], image, qty, date }) => {
           </Stack>
         </CardContent>
       </CardActionArea>
+      <CardActions
+        sx={{
+          justifyContent: "flex-end",
+          p: 0,
+        }}
+      >
+        {isCanCancel && status !== "cancel" && (
+          <IconButton
+            sx={{
+              zIndex: 100,
+            }}
+            size="small"
+          >
+            <Delete color="error" onClick={handleCancel} />
+          </IconButton>
+        )}{" "}
+        {status === "cancel" && (
+          <Chip
+            color="error"
+            label="ยกเลิกแล้ว"
+            size="small"
+            sx={{ m: "6px" }}
+          />
+        )}
+      </CardActions>
     </Card>
   );
 };
 
 export default EventCard;
+

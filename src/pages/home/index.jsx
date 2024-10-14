@@ -19,28 +19,53 @@ const HomePage = () => {
       const response = await getEvents();
       const respReq = await getRequests({});
 
-      const mapInterest = response.data.map((event) => {
-        const interested = respReq.data.filter(
-          (req) => req.event_id === event.id && req.status === "join"
-        );
-        return {
-          ...event,
-          interested_qty: interested.length,
-        };
-      });
+      const mapInterest = response.data
+        .filter((res) => res.status === "publish")
+        .map((event) => {
+          const interested = respReq.data.filter(
+            (req) => req.event_id === event.id && req.status === "join"
+          );
+          return {
+            ...event,
+            interested_qty: interested.length,
+          };
+        });
 
-      const sortInterest = mapInterest.sort(
+      const sortInterest = [...mapInterest].sort(
         (a, b) => b.interested_qty - a.interested_qty
       );
+
+      const mapInterestingPoint = [...mapInterest]
+        .map((ev) => {
+          let point = 0;
+
+          ev.tags.forEach((tag) => {
+            if (user?.interests[0] === tag) {
+              point += 3;
+            }
+
+            if (user?.interests[1] === tag) {
+              point += 2;
+            }
+
+            if (user?.interests[2] === tag) {
+              point += 1;
+            }
+          });
+
+          return {
+            ...ev,
+            interesting_point: point,
+          };
+        })
+        .sort((a, b) => b.interesting_point - a.interesting_point);
 
       setEvents(mapInterest);
       setSortEvents(sortInterest);
 
-      setRelatedEvents(
-        mapInterest.filter((event) =>
-          event.tags.some((tag) => user?.interests?.includes(tag))
-        )
-      );
+      setRelatedEvents(mapInterestingPoint);
+
+      console.log("mapInterestingPoint", mapInterestingPoint);
     } catch (error) {
       console.error(error);
     } finally {
@@ -61,7 +86,7 @@ const HomePage = () => {
           loading={loading}
         />
         <EventContainer
-          title="กิจกรรมสำหรับคุณ"
+          title={`กิจกรรมสำหรับคุณ ${user?.interests?.length ? `(${user?.interests.join(", ")})` : ""} `}
           events={relatedEvents.slice(0, 4)}
           loading={loading}
         />
@@ -74,6 +99,7 @@ const HomePage = () => {
           title="กิจกรรมทั้งหมด"
           events={events}
           loading={loading}
+          showToolbar
         />
       </Stack>
     </>

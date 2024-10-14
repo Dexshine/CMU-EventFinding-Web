@@ -1,8 +1,25 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
+import _ from "lodash";
 
-const EventRanking = () => {
-  const events = [
+const EventRanking = ({ events }) => {
+  const groupTitles = Object.values(_.groupBy(events, "title"));
+
+  const toArray = groupTitles.map((gr) => {
+    return {
+      label: gr[0].title,
+      value: gr.length,
+    };
+  });
+
+  console.log("groupTitles", groupTitles);
+
+  const sortArray = toArray.sort((a, b) => b.value - a.value);
+
+  const labels = sortArray.map((tag) => tag.label).slice(0, 5);
+  const datas = sortArray.map((tag) => tag.value).slice(0, 5);
+
+  const eventsData = [
     "กิจกรรมเตะฟุตบอล",
     "กิจกรรมปลูกป่า",
     "กิจกรรมทำความสะอาด",
@@ -33,11 +50,11 @@ const EventRanking = () => {
   ].sort((a, b) => b - a);
 
   const data = {
-    labels: events,
+    labels: labels,
     datasets: [
       {
         label: "จำนวน",
-        data: sampleValues,
+        data: datas,
         backgroundColor: pastelColors,
       },
     ],

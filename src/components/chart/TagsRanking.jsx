@@ -1,43 +1,26 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-// import {
-//   Chart as ChartJS,
-//   Title,
-//   Tooltip,
-//   Legend,
-//   BarElement,
-//   CategoryScale,
-//   LinearScale,
-// } from "chart.js";
+import _ from "lodash";
 
-// // Register Chart.js components
-// ChartJS.register(
-//   Title,
-//   Tooltip,
-//   Legend,
-//   BarElement,
-//   CategoryScale,
-//   LinearScale
-// );
+const TagsRanking = ({ events }) => {
+  const tagsGroup = Object.values(
+    _.groupBy(
+      events.flatMap((ev) => ev.tags),
+      (tag) => tag
+    )
+  );
 
-const TagsRanking = () => {
-  const tags = [
-    "วิชาการ",
-    "วิชาชีพ",
-    "กิจการนักศึกษา",
-    "เพิ่มทักษะ",
-    "เทคโนโลยี",
-    // "บันเทิง",
-    // "ศิลปะ",
-    // "การแสดง",
-    // "ศาสนา",
-    // "เทศกาล",
-    // "สุขภาพ",
-    // "กีฬา",
-    // "เข้าสังคม",
-    // "จิตอาสา",
-    // "ท่องเที่ยว",
-  ];
+  const tagsArray = tagsGroup.map((tag) => {
+    return {
+      tag: tag[0],
+      qty: tag.length,
+    };
+  });
+
+  const sortTags = tagsArray.sort((a, b) => b.qty - a.qty);
+
+  const tags = sortTags.map((tag) => tag.tag).slice(0, 5);
+  const tagDatas = sortTags.map((tag) => tag.qty).slice(0, 5);
 
   const sampleValues = [
     15, 20, 10, 25, 18, 12, 8, 5, 6, 7, 11, 9, 4, 3, 2,
@@ -66,7 +49,7 @@ const TagsRanking = () => {
     datasets: [
       {
         label: "จำนวน",
-        data: sampleValues,
+        data: tagDatas,
         backgroundColor: pastelColors,
       },
     ],

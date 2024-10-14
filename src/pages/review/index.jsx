@@ -91,7 +91,7 @@ const ReviewPage = () => {
 
       <Box>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          กิจกรรมของฉัน
+          กิจกรรมที่สร้าง
         </Typography>
 
         <Flex>
@@ -122,3 +122,4 @@ const ReviewPage = () => {
 };
 
 export default ReviewPage;
+

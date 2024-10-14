@@ -58,7 +58,13 @@ const App = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <GoogleOAuthProvider clientId={CLIENT_ID}>
           <AuthProvider>
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                style: {
+                  fontSize: "20px",
+                },
+              }}
+            />
             <DialogsProvider>
               <RouterProvider router={router} />
             </DialogsProvider>
@@ -70,3 +76,4 @@ const App = () => {
 };
 
 export default App;
+

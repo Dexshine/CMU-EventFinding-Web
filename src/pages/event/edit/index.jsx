@@ -29,6 +29,7 @@ import RHFUploadWrapper from "./RHFUploadWrapper";
 import { useDialogs } from "@toolpad/core";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import dayjs from "dayjs";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("กรุณากรอกชื่อกิจกรรม"),
@@ -55,6 +56,7 @@ const EventCreateEditPage = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    watch,
   } = method;
   const [isLoading, setIsLoading] = useState(false);
   const dialogs = useDialogs();
@@ -95,13 +97,9 @@ const EventCreateEditPage = () => {
       formData.append("is_from_corp", !!data?.is_from_corp);
       formData.append("createdBy", user._id);
 
-      const response = await toast.promise(createEvent(formData), {
-        loading: "กำลังบันทึก...",
-        success: "บันทึกสำเร็จ!",
-        error: "เกิดข้อผิดพลาดในการบันทึก",
-      });
+      const response = await createEvent(formData);
 
-      console.log("response", response);
+      toast.success("บันทึกสำเร็จ!");
 
       if (status === "publish") {
         await dialogs.open(SuccessDialog, {
@@ -110,6 +108,8 @@ const EventCreateEditPage = () => {
       }
     } catch (error) {
       console.warn("error", error);
+
+      toast.error("เกิดข้อผิดพลาดในการบันทึก");
     } finally {
       setIsLoading(false);
     }
@@ -126,8 +126,21 @@ const EventCreateEditPage = () => {
         label="ประเภทกิจกรรม"
       />
       <Box display="flex" alignItems="center" gap={2}>
-        <RHFDatePicker name="start_date" label="วันเริ่มต้น" />
-        <RHFDatePicker name="end_date" label="วันสิ้นสุด" />
+        <RHFDatePicker
+          name="start_date"
+          label="วันเริ่มต้น"
+          datePickerProps={{
+            minDateTime: dayjs(),
+            maxDateTime: watch("end_date") ?? null,
+          }}
+        />
+        <RHFDatePicker
+          name="end_date"
+          label="วันสิ้นสุด"
+          datePickerProps={{
+            minDateTime: watch("start_date") ?? dayjs(),
+          }}
+        />
       </Box>
       <RHFTextField name="location" label="สถานที่จัดกิจกรรม" />
       <RHFMultiSelect

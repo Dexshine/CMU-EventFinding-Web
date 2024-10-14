@@ -2,12 +2,6 @@ import axiosInstance from "./axiosInstance";
 
 export const createRequest = async (data) => {
   try {
-    // {
-    //     "event_id": "event20240004",
-    //     "user_id": "66fc3e7fc674cda01c2ace70",
-    //     "status": "join"
-    // }
-
     const response = await axiosInstance.post("/request", data);
     return response.data;
   } catch (error) {

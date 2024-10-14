@@ -123,7 +123,7 @@ export default function MenuNavigation() {
             // value={3}
             value="/review"
             icon={<Comment />}
-            label="รีวิวกิจกรรม"
+            label="กิจกรรมของฉัน"
           />
           <StyedTab
             // value={4}

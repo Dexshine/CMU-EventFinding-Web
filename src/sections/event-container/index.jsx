@@ -2,15 +2,40 @@ import {
   Box,
   Card,
   CardContent,
+  FormControl,
+  IconButton,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
   Skeleton,
+  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 import EventCard from "../../components/EventCard";
+import { tagOptions } from "../../assets/options";
+import { Refresh } from "@mui/icons-material";
 
-const EventContainer = ({ title, events, loading }) => {
-  // const theme = useTheme();
+const EventContainer = ({ title, events, loading, showToolbar = false }) => {
+  const theme = useTheme();
+  const [filter, setFilter] = useState({
+    search: "",
+    tag: "",
+  });
+
+  const filterEvents = events?.filter((event) => {
+    if (filter.tag) {
+      return event.tags.includes(filter.tag);
+    }
+
+    if (filter.search) {
+      return event.title.toLowerCase().includes(filter.search.toLowerCase());
+    }
+
+    return true;
+  });
 
   const displayLoadings = (
     <Box>
@@ -18,6 +43,69 @@ const EventContainer = ({ title, events, loading }) => {
       <Skeleton variant="text" height={40} sx={{ fontSize: "1rem" }} />
       <Skeleton variant="text" height={40} sx={{ fontSize: "1rem" }} />
       <Skeleton variant="text" height={40} sx={{ fontSize: "1rem" }} />
+    </Box>
+  );
+
+  const displayToolbar = (
+    <Box
+      mb={2}
+      display="flex"
+      p={1}
+      // bgcolor="white"
+      gap={2}
+      // sx={{
+      //   borderRadius: theme.shape.borderRadius,
+      // }}
+    >
+      <TextField
+        label="ค้นหากิจกรรม"
+        onChange={(ev) =>
+          setFilter((prev) => {
+            return {
+              ...prev,
+              search: ev.target.value,
+            };
+          })
+        }
+        value={filter.search}
+        variant="outlined"
+        sx={{
+          width: "300px",
+          bgcolor: "white",
+        }}
+      />
+
+      <FormControl>
+        <InputLabel>เลือกแท็ก</InputLabel>
+        <Select
+          value={filter.tag}
+          onChange={(ev) =>
+            setFilter((prev) => {
+              return { ...prev, tag: ev.target.value };
+            })
+          }
+          sx={{
+            bgcolor: "white",
+            width: "200px",
+          }}
+          label="เลือกแท็ก"
+        >
+          {tagOptions.map((tag) => (
+            <MenuItem value={tag.value}>{tag.label}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <IconButton
+        onClick={() => {
+          setFilter({
+            search: "",
+            tag: "",
+          });
+        }}
+      >
+        <Refresh />
+      </IconButton>
     </Box>
   );
 
@@ -30,18 +118,22 @@ const EventContainer = ({ title, events, loading }) => {
         <Typography variant="h4">{title}</Typography>
       </Box>
 
+      {showToolbar && displayToolbar}
+
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         {loading && displayLoadings}
-        {events ? (
-          events.map((event) => (
+        {filterEvents ? (
+          filterEvents.map((event) => (
             <EventCard
               key={event.id}
               id={event.id}
               title={event.title}
-              image={event.images[0]}
+              image={event.images[0] ?? "/assets/images/blank.png"}
               tags={event.tags}
               qty={event.interested_qty}
               date={event.start_date}
+              end_date={event.end_date}
+              status={event.status}
             />
           ))
         ) : (

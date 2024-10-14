@@ -1,3 +1,5 @@
+import { STORAGE_BUCKET } from "../../config/config-variable";
+
 export const convertImageToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -8,5 +10,5 @@ export const convertImageToBase64 = (file) => {
 };
 
 export const generateImageUrl = (fileName) => {
-  return `https://storage.googleapis.com/event-finding.appspot.com/${fileName}`;
+  return `https://storage.googleapis.com/${STORAGE_BUCKET}/${fileName}`;
 };

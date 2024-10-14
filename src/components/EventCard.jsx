@@ -112,11 +112,11 @@ const EventCard = ({
           }}
         >
           {dayjs(end_date).isBefore(startDate) ? (
-            <>จบแล้ว</>
+            <>จบไปแล้ว</>
           ) : dayjs(date).isAfter(startDate) ? (
             <>จะเริ่มใน {dayjs(date).diff(startDate, "day")} วัน</>
           ) : (
-            <>กำลังจัดกิจกรรม</>
+            <>เริ่มไปแล้ว</>
           )}
         </Box>
         <CardMedia component="img" height="140px" image={image} alt={title} />
@@ -196,4 +196,3 @@ const EventCard = ({
 };
 
 export default EventCard;
-

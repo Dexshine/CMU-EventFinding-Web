@@ -21,6 +21,15 @@ export const getEvent = async (id) => {
     console.error(error);
   }
 };
+export const getEventsByUser = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/event/createdBy/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const createEvent = async (data) => {
   try {
     const response = await axiosInstance.post("/event", data, {

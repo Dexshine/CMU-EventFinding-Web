@@ -15,49 +15,29 @@ export const tagOptions = [
     image: "/assets/images/tags-pic/event_std.jpg",
   },
   {
-    value: "เพิ่มทักษะ",
-    label: "เพิ่มทักษะ",
-    image: "/assets/images/tags-pic/upskill.png",
-  },
-  {
     value: "เทคโนโลยี",
     label: "เทคโนโลยี",
     image: "/assets/images/tags-pic/tech.jpg",
   },
   {
-    value: "บันเทิง",
-    label: "บันเทิง",
+    value: "การพัฒนาตนเอง",
+    label: "การพัฒนาตนเอง",
+    image: "/assets/images/tags-pic/upskill.png",
+  },
+  {
+    value: "บันเทิงและเกม",
+    label: "บันเทิงและเกม",
     image: "/assets/images/tags-pic/entertain.jpg",
   },
   {
-    value: "ศิลปะ",
-    label: "ศิลปะ",
+    value: "ศิลปะและวัฒนธรรม",
+    label: "ศิลปะและวัฒนธรรม",
     image: "/assets/images/tags-pic/art.jpg",
   },
   {
-    value: "การแสดง",
-    label: "การแสดง",
-    image: "/assets/images/tags-pic/acting.jpg",
-  },
-  {
-    value: "ศาสนา",
-    label: "ศาสนา",
-    image: "/assets/images/tags-pic/region.jpg",
-  },
-  {
-    value: "เทศกาล",
-    label: "เทศกาล",
-    image: "/assets/images/tags-pic/festival.jpg",
-  },
-  {
-    value: "สุขภาพ",
-    label: "สุขภาพ",
+    value: "สุขภาพและกีฬา",
+    label: "สุขภาพและกีฬา",
     image: "/assets/images/tags-pic/health.jpg",
-  },
-  {
-    value: "กีฬา",
-    label: "กีฬา",
-    image: "/assets/images/tags-pic/sport.jpg",
   },
   {
     value: "เข้าสังคม",
@@ -65,14 +45,9 @@ export const tagOptions = [
     image: "/assets/images/tags-pic/social.jpg",
   },
   {
-    value: "จิตอาสา",
-    label: "จิตอาสา",
+    value: "จิตอาสาและศาสนา",
+    label: "จิตอาสาและศาสนา",
     image: "/assets/images/tags-pic/volunteer.jpg",
-  },
-  {
-    value: "ท่องเที่ยว",
-    label: "ท่องเที่ยว",
-    image: "/assets/images/tags-pic/travel.jpg",
   },
 ];
 
@@ -124,3 +99,4 @@ export const departmentOptions = [
   },
   { value: "บัณฑิตวิทยาลัย", label: "บัณฑิตวิทยาลัย" },
 ];
+

@@ -58,6 +58,7 @@ const HomePage = () => {
             interesting_point: point,
           };
         })
+        .filter((item) => item.interesting_point > 0)
         .sort((a, b) => b.interesting_point - a.interesting_point);
 
       setEvents(mapInterest);

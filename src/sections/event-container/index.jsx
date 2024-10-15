@@ -122,7 +122,7 @@ const EventContainer = ({ title, events, loading, showToolbar = false }) => {
 
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         {loading && displayLoadings}
-        {filterEvents ? (
+        {filterEvents.length ? (
           filterEvents.map((event) => (
             <EventCard
               key={event.id}
@@ -137,7 +137,7 @@ const EventContainer = ({ title, events, loading, showToolbar = false }) => {
             />
           ))
         ) : (
-          <Box height={200} width={260}>
+          <Box height={200} width={260} display="flex" alignItems="center">
             <Typography variant="h6" color="textSecondary">
               ไม่มีกิจกรรม
             </Typography>

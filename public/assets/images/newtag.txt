@@ -1,0 +1,52 @@
+﻿export const tagOptions = [
+  {
+    value: "วิชาการ",
+    label: "วิชาการ",
+    image: "/assets/images/tags-pic/academic.jpg",
+  },
+  {
+    value: "วิชาชีพ",
+    label: "วิชาชีพ",
+    image: "/assets/images/tags-pic/career.jpg",
+  },
+  {
+    value: "กิจการนักศึกษา",
+    label: "กิจการนักศึกษา",
+    image: "/assets/images/tags-pic/event_std.jpg",
+  },
+  {
+    value: "เทคโนโลยี",
+    label: "เทคโนโลยี",
+    image: "/assets/images/tags-pic/tech.jpg",
+  },
+  {
+    value: "การพัฒนาตนเอง",
+    label: "การพัฒนาตนเอง",
+    image: "/assets/images/tags-pic/upskill.png",
+  },
+  {
+    value: "บันเทิงและเกม",
+    label: "บันเทิงและเกม",
+    image: "/assets/images/tags-pic/entertain.jpg",
+  },
+  {
+    value: "ศิลปะและวัฒนธรรม",
+    label: "ศิลปะและวัฒนธรรม",
+    image: "/assets/images/tags-pic/art.jpg",
+  },
+  {
+    value: "สุขภาพและกีฬา",
+    label: "สุขภาพและกีฬา",
+    image: "/assets/images/tags-pic/health.jpg",
+  },
+  {
+    value: "เข้าสังคม",
+    label: "เข้าสังคม",
+    image: "/assets/images/tags-pic/social.jpg",
+  },
+  {
+    value: "จิตอาสาและศาสนา",
+    label: "จิตอาสาและศาสนา",
+    image: "/assets/images/tags-pic/volunteer.jpg",
+  },
+];

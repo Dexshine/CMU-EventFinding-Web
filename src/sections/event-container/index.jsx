@@ -91,7 +91,9 @@ const EventContainer = ({ title, events, loading, showToolbar = false }) => {
           label="เลือกแท็ก"
         >
           {tagOptions.map((tag) => (
-            <MenuItem value={tag.value}>{tag.label}</MenuItem>
+            <MenuItem value={tag.value} key={tag.value}>
+              {tag.label}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

@@ -50,6 +50,83 @@ export const tagOptions = [
     image: "/assets/images/tags-pic/volunteer.jpg",
   },
 ];
+// export const tagOptions = [
+//   {
+//     value: "วิชาการ",
+//     label: "วิชาการ",
+//     image: "/assets/images/tags-pic/academic.jpg",
+//   },
+//   {
+//     value: "วิชาชีพ",
+//     label: "วิชาชีพ",
+//     image: "/assets/images/tags-pic/career.jpg",
+//   },
+//   {
+//     value: "กิจการนักศึกษา",
+//     label: "กิจการนักศึกษา",
+//     image: "/assets/images/tags-pic/event_std.jpg",
+//   },
+//   {
+//     value: "เพิ่มทักษะ",
+//     label: "เพิ่มทักษะ",
+//     image: "/assets/images/tags-pic/upskill.png",
+//   },
+//   {
+//     value: "เทคโนโลยี",
+//     label: "เทคโนโลยี",
+//     image: "/assets/images/tags-pic/tech.jpg",
+//   },
+//   {
+//     value: "บันเทิง",
+//     label: "บันเทิง",
+//     image: "/assets/images/tags-pic/entertain.jpg",
+//   },
+//   {
+//     value: "ศิลปะ",
+//     label: "ศิลปะ",
+//     image: "/assets/images/tags-pic/art.jpg",
+//   },
+//   {
+//     value: "การแสดง",
+//     label: "การแสดง",
+//     image: "/assets/images/tags-pic/acting.jpg",
+//   },
+//   {
+//     value: "ศาสนา",
+//     label: "ศาสนา",
+//     image: "/assets/images/tags-pic/region.jpg",
+//   },
+//   {
+//     value: "เทศกาล",
+//     label: "เทศกาล",
+//     image: "/assets/images/tags-pic/festival.jpg",
+//   },
+//   {
+//     value: "สุขภาพ",
+//     label: "สุขภาพ",
+//     image: "/assets/images/tags-pic/health.jpg",
+//   },
+//   {
+//     value: "กีฬา",
+//     label: "กีฬา",
+//     image: "/assets/images/tags-pic/sport.jpg",
+//   },
+//   {
+//     value: "เข้าสังคม",
+//     label: "เข้าสังคม",
+//     image: "/assets/images/tags-pic/social.jpg",
+//   },
+//   {
+//     value: "จิตอาสา",
+//     label: "จิตอาสา",
+//     image: "/assets/images/tags-pic/volunteer.jpg",
+//   },
+//   {
+//     value: "ท่องเที่ยว",
+//     label: "ท่องเที่ยว",
+//     image: "/assets/images/tags-pic/travel.jpg",
+//   },
+// ];
 
 export const departmentOptions = [
   { value: "ทุกคณะ", label: "ทุกคณะ" },
@@ -99,4 +176,3 @@ export const departmentOptions = [
   },
   { value: "บัณฑิตวิทยาลัย", label: "บัณฑิตวิทยาลัย" },
 ];
-

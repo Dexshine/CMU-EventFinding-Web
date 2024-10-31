@@ -8,12 +8,13 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
-import { getRequests, getRequestsByUser } from "../../api/request";
+import { getRequests, getRequestsByUser } from "../../api/review";
 import useAuth from "../../hooks/useAuth";
 import Flex from "../../components/Flex";
 import { generateImageUrl } from "../../utils/function/global";
 import { getEventsByUser } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import { INTERESTED } from "../../assets/status";
 
 const ReviewPage = () => {
   const { user } = useAuth();
@@ -28,7 +29,9 @@ const ReviewPage = () => {
 
       const response = await getRequestsByUser(user._id);
 
-      const filterJoin = response.data.filter((item) => item.status === "join");
+      const filterJoin = response.data.filter(
+        (item) => item.status === INTERESTED
+      );
 
       setReviews(filterJoin);
     } catch (error) {
@@ -50,7 +53,7 @@ const ReviewPage = () => {
         .filter((res) => res.status !== "draft")
         .map((event) => {
           const interested = respReq.data.filter(
-            (req) => req.event_id === event.id && req.status === "join"
+            (req) => req.event_id === event.id && req.status === INTERESTED
           );
           return {
             ...event,
@@ -78,7 +81,7 @@ const ReviewPage = () => {
     <Stack spacing={2}>
       <Box>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          กิจกรรมของฉัน
+          กิจกรรมที่สร้าง
         </Typography>
 
         <Flex>
@@ -110,7 +113,7 @@ const ReviewPage = () => {
       <Divider />
       <Box>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          กิจกรรมที่เข้าร่วม
+          กิจกรรมที่สนใจ
         </Typography>
 
         <Box
@@ -137,3 +140,4 @@ const ReviewPage = () => {
 };
 
 export default ReviewPage;
+

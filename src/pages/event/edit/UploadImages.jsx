@@ -50,7 +50,7 @@ function UploadImages({ uploadImages, setUploadImages }) {
     accept: { "image/*": [] },
     maxFiles: 3,
     onDropRejected: () => {
-      setErrorMessage("You can only upload up to 3 images.");
+      setErrorMessage("เลือกรูปภาพได้สูงสุด 3 รูป");
     },
   });
 
@@ -95,7 +95,7 @@ function UploadImages({ uploadImages, setUploadImages }) {
   return (
     <Box>
       <Box>
-        <h4>Upload event image (maximum is 3)</h4>
+        <h4>อัพโหลดรูปภาพ (สูงสุด 3 รูป )</h4>
         {errorMessage && (
           <Typography color="error" variant="body2">
             {errorMessage}

@@ -16,7 +16,7 @@ import {
 import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Star } from "@mui/icons-material";
-import { patchRequest } from "../../../api/request";
+import { patchRequest } from "../../../api/review";
 import toast from "react-hot-toast";
 
 const lists = [

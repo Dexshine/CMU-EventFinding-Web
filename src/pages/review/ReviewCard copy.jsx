@@ -8,11 +8,12 @@ import { useMemo, useState } from "react";
 import Ratings from "../event/view/Ratings";
 import { CardActions, IconButton, Rating, Stack } from "@mui/material";
 import Flex from "../../components/Flex";
-import { createRequest, patchRequest } from "../../api/request";
+import { createRequest, patchRequest } from "../../api/review";
 import toast from "react-hot-toast";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { CANCEL, INTERESTED } from "../../assets/status";
 
 export default function ReviewCard({ imagePath, title, event, review }) {
   const theme = useTheme();
@@ -44,7 +45,7 @@ export default function ReviewCard({ imagePath, title, event, review }) {
 
       if (review) {
         const dataEdit = {
-          status: review?.status === "join" ? "cancel" : "join",
+          status: review?.status === INTERESTED ? CANCEL : INTERESTED,
         };
 
         await patchRequest(user._id, event.id, dataEdit);
@@ -52,7 +53,7 @@ export default function ReviewCard({ imagePath, title, event, review }) {
         const dataCreate = {
           event_id: event.id,
           user_id: user._id,
-          status: "join",
+          status: INTERESTED,
         };
 
         await createRequest(dataCreate);
@@ -145,7 +146,7 @@ export default function ReviewCard({ imagePath, title, event, review }) {
               padding: 0,
             }}
           >
-            {review?.status === "join" ? (
+            {review?.status === INTERESTED ? (
               <Favorite color="error" fontSize="large" />
             ) : (
               <FavoriteBorder color="default" fontSize="large" />

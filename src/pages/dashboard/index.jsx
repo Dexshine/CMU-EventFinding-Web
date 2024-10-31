@@ -1,7 +1,7 @@
 import MainCard from "../../components/MainCard";
 import { Box, Stack, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { getRequests } from "../../api/request";
+import { getRequests } from "../../api/review";
 import BarChartComp from "../../components/chart/BarChartComp";
 import RadarChartComp from "../../components/chart/RadarChartComp";
 import Flex from "../../components/Flex";
@@ -11,6 +11,7 @@ import TagsRanking from "../../components/chart/TagsRanking";
 import EventRanking from "../../components/chart/EventRanking";
 import { getUsers } from "../../api/user";
 import { getEvents } from "../../api/event";
+import { INTERESTED } from "../../assets/status";
 
 const DashboardPage = () => {
   const [requests, setRequests] = useState([]);
@@ -19,7 +20,7 @@ const DashboardPage = () => {
 
   const getData = useCallback(async () => {
     try {
-      const responseRequest = await getRequests({ status: "join" });
+      const responseRequest = await getRequests({ status: INTERESTED });
       const responseUser = await getUsers();
       const responseEvent = await getEvents();
 

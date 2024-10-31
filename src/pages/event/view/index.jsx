@@ -19,7 +19,7 @@ import { getEvent } from "../../../api/event";
 import { toDate } from "../../../utils/function/date";
 import ImagesLightbox from "./ImagesLightbox";
 import useAuth from "../../../hooks/useAuth";
-import { createRequest, getRequests, patchRequest } from "../../../api/request";
+import { createRequest, getRequests, patchRequest } from "../../../api/review";
 import toast from "react-hot-toast";
 import { LoadingButton } from "@mui/lab";
 import Flex from "../../../components/Flex";
@@ -37,6 +37,7 @@ import {
   Phone,
 } from "@mui/icons-material";
 import Ratings from "./Ratings";
+import { CANCEL, INTERESTED } from "../../../assets/status";
 
 const EventViewPage = () => {
   const { id } = useParams();
@@ -76,7 +77,7 @@ const EventViewPage = () => {
 
       if (request) {
         const dataEdit = {
-          status: request?.status === "join" ? "cancel" : "join",
+          status: request?.status === INTERESTED ? CANCEL : INTERESTED,
         };
 
         await patchRequest(user._id, id, dataEdit);
@@ -84,7 +85,7 @@ const EventViewPage = () => {
         const dataCreate = {
           event_id: id,
           user_id: user._id,
-          status: "join",
+          status: INTERESTED,
         };
 
         await createRequest(dataCreate);
@@ -109,7 +110,9 @@ const EventViewPage = () => {
 
       const byUser = respReq?.data?.find((item) => item?.user_id === user?._id);
 
-      const filterJoin = respReq?.data.filter((item) => item.status === "join");
+      const filterJoin = respReq?.data.filter(
+        (item) => item.status === INTERESTED
+      );
 
       const count = filterJoin?.length;
 
@@ -194,9 +197,15 @@ const EventViewPage = () => {
             </Flex>
 
             <Flex gap={1}>
-              {request?.status === "join" && !request?.rating && isPassed && (
-                <Ratings eventId={id} isShowPopper callback={() => getData()} />
-              )}
+              {request?.status === INTERESTED &&
+                !request?.rating &&
+                isPassed && (
+                  <Ratings
+                    eventId={id}
+                    isShowPopper
+                    callback={() => getData()}
+                  />
+                )}
               <IconButton
                 disabled={isPassed}
                 onClick={onHandleInterested}
@@ -204,7 +213,7 @@ const EventViewPage = () => {
                   padding: 0,
                 }}
               >
-                {request?.status === "join" ? (
+                {request?.status === INTERESTED ? (
                   <Favorite color="error" fontSize="large" />
                 ) : (
                   <FavoriteBorder color="default" fontSize="large" />

@@ -30,6 +30,7 @@ import { useDialogs } from "@toolpad/core";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import dayjs from "dayjs";
+import { PUBLISH } from "../../../assets/status";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("กรุณากรอกชื่อกิจกรรม"),
@@ -39,7 +40,7 @@ const validationSchema = yup.object().shape({
   faculties: yup
     .array()
     .min(1, "กรุณาเลือกคณะของผู้ร่วมอย่างน้อย 1 คณะ")
-    .max(10, "เลือกคณะของผู้ร่วมได้สูงสุด 10 คณะ"),
+    .max(3, "เลือกคณะของผู้ร่วมได้สูงสุด 3 คณะ"),
   tags: yup
     .array()
     .min(1, "กรุณาเลือกประเภทกิจกรรมอย่างน้อย 1 ประเภท")
@@ -47,6 +48,10 @@ const validationSchema = yup.object().shape({
   email: yup.string().email("กรุณากรอกอีเมลที่ถูกต้อง"),
   phone: yup.string(),
   other_contact: yup.string(),
+  uploadImages: yup
+    .array()
+    .min(1, "กรุณาเลือกรูปภาพอย่างน้อย 1 รูป")
+    .max(3, "เลือกรูปภาพได้สูงสุด 3 รูป"),
 });
 
 const EventCreateEditPage = () => {
@@ -62,12 +67,19 @@ const EventCreateEditPage = () => {
   const dialogs = useDialogs();
   const { user } = useAuth();
 
-  console.log("user", user);
-
   const onHandleSubmit = async (data, status) => {
-    console.log("onHandleSubmit", data);
-
     try {
+      const sizeLimit = 5 * 1024 * 1024; // 5MB
+
+      const checkTotalFileSize = data.uploadImages.reduce((acc, curr) => {
+        return acc + curr.file.size;
+      }, 0);
+
+      if (checkTotalFileSize > sizeLimit) {
+        toast.error("ขนาดไฟล์รวมต้องไม่เกิน 5MB");
+        return;
+      }
+
       setIsLoading(true);
       const formData = new FormData();
       formData.append("title", data?.title ?? "");
@@ -76,17 +88,13 @@ const EventCreateEditPage = () => {
       data.tags.forEach((tag) => {
         formData.append("tags", tag);
       });
-
       formData.append("start_date", data?.start_date ?? "");
-
       formData.append("end_date", data?.end_date ?? "");
-
       formData.append("location", data?.location ?? "");
       // formData.append("faculties", data.faculties);
       data.faculties.forEach((faculty) => {
         formData.append("faculties", faculty);
       });
-
       data.uploadImages.forEach((image) => {
         formData.append("images", image.file);
       });
@@ -96,12 +104,9 @@ const EventCreateEditPage = () => {
       formData.append("status", status);
       formData.append("is_from_corp", !!data?.is_from_corp);
       formData.append("createdBy", user._id);
-
       const response = await createEvent(formData);
-
       toast.success("บันทึกสำเร็จ!");
-
-      if (status === "publish") {
+      if (status === PUBLISH) {
         await dialogs.open(SuccessDialog, {
           id: response.data.id,
         });
@@ -154,7 +159,7 @@ const EventCreateEditPage = () => {
     </Stack>
   );
 
-  const displayForm2 = (
+  const dispkayForm2 = (
     <Stack spacing={2}>
       <RHFUploadWrapper />
 
@@ -201,7 +206,9 @@ const EventCreateEditPage = () => {
 
   return (
     <Paper elevation={2} sx={{ p: 4 }}>
-      <Typography>ข้อมูลกิจกรรม</Typography>
+      <Typography variant="h4" gutterBottom>
+        ข้อมูลกิจกรรม
+      </Typography>
 
       <FormProvider {...method}>
         <Box
@@ -215,32 +222,25 @@ const EventCreateEditPage = () => {
           }}
         >
           <Box>{displayForm}</Box>
-          <Box>{displayForm2}</Box>
+          <Box>{dispkayForm2}</Box>
         </Box>
 
         <Stack direction="row" gap={2} justifyContent="end" alignItems="center">
-          <Button variant="outlined" color="error">
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => navigate("/")}
+          >
             ยกเลิก
           </Button>
-          {/* <Button
-            variant="contained"
-            color="info"
-            disabled={isLoading}
-            onClick={async () => {
-              const data = getValues();
 
-              await onHandleSubmit(data, "draft");
-            }}
-          >
-            บันทึกฉบับร่าง
-          </Button> */}
           <Button
             variant="contained"
             color="primary"
-            onClick={handleSubmit((ev) => onHandleSubmit(ev, "publish"))}
+            onClick={handleSubmit((ev) => onHandleSubmit(ev, PUBLISH))}
             disabled={isLoading}
           >
-            ต่อไป
+            สร้างกิจกรรม
           </Button>
         </Stack>
       </FormProvider>
@@ -249,4 +249,3 @@ const EventCreateEditPage = () => {
 };
 
 export default EventCreateEditPage;
-

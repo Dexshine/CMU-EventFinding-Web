@@ -1,6 +1,7 @@
+import { PUBLISH } from "../assets/status";
 import axiosInstance from "./axiosInstance";
 
-export const getEvents = async (status = "publish") => {
+export const getEvents = async (status = PUBLISH) => {
   try {
     const response = await axiosInstance.get("/event", {
       params: {

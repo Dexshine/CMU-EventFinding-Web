@@ -1,10 +1,10 @@
 import { Stack } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { getEvents } from "../../api/event";
-import EventContainer from "../../sections/event-container";
-import InterestingList from "../../components/interesting-list";
-import { getRequests } from "../../api/request";
+import { getRequests } from "../../api/review";
+import { INTERESTED, PUBLISH } from "../../assets/status";
 import useAuth from "../../hooks/useAuth";
+import EventContainer from "../../sections/event-container";
 
 const HomePage = () => {
   const [events, setEvents] = useState([]);
@@ -19,17 +19,19 @@ const HomePage = () => {
       const response = await getEvents();
       const respReq = await getRequests({});
 
-      const mapInterest = response.data
-        .filter((res) => res.status === "publish")
-        .map((event) => {
-          const interested = respReq.data.filter(
-            (req) => req.event_id === event.id && req.status === "join"
-          );
-          return {
-            ...event,
-            interested_qty: interested.length,
-          };
-        });
+      const filterPublish = response.data.filter(
+        (res) => res.status === PUBLISH
+      );
+
+      const mapInterest = filterPublish.map((event) => {
+        const interested = respReq.data.filter(
+          (req) => req.event_id === event.id && req.status === INTERESTED
+        );
+        return {
+          ...event,
+          interested_qty: interested.length,
+        };
+      });
 
       const sortInterest = [...mapInterest].sort(
         (a, b) => b.interested_qty - a.interested_qty
@@ -39,19 +41,21 @@ const HomePage = () => {
         .map((ev) => {
           let point = 0;
 
-          ev.tags.forEach((tag) => {
-            if (user?.interests[0] === tag) {
-              point += 3;
-            }
+          if (user && user.interests.length) {
+            ev.tags.forEach((tag) => {
+              if (user?.interests[0] === tag) {
+                point += 3;
+              }
 
-            if (user?.interests[1] === tag) {
-              point += 2;
-            }
+              if (user?.interests[1] === tag) {
+                point += 2;
+              }
 
-            if (user?.interests[2] === tag) {
-              point += 1;
-            }
-          });
+              if (user?.interests[2] === tag) {
+                point += 1;
+              }
+            });
+          }
 
           return {
             ...ev,
@@ -65,8 +69,6 @@ const HomePage = () => {
       setSortEvents(sortInterest);
 
       setRelatedEvents(mapInterestingPoint);
-
-      console.log("mapInterestingPoint", mapInterestingPoint);
     } catch (error) {
       console.error(error);
     } finally {
@@ -78,22 +80,30 @@ const HomePage = () => {
     getData();
   }, [getData]);
 
+  const filterNotOver = (eventsArr) => {
+    return [...eventsArr].filter(
+      (el) => new Date().getTime() <= new Date(el.end_date).getTime()
+    );
+  };
+
   return (
     <>
       <Stack spacing={4}>
         <EventContainer
           title="กิจกรรมที่ช่วงนี้ผู้คนสนใจ"
-          events={sortEvents.slice(0, 4)}
+          events={filterNotOver(sortEvents).slice(0, 4)}
           loading={loading}
         />
         <EventContainer
           title={`กิจกรรมสำหรับคุณ ${user?.interests?.length ? `(${user?.interests.join(", ")})` : ""} `}
-          events={relatedEvents.slice(0, 4)}
+          events={filterNotOver(relatedEvents).slice(0, 4)}
           loading={loading}
         />
         <EventContainer
-          title="กิจกรรมที่จากหน่วยงาน / คณะ"
-          events={events.filter((event) => !!event?.is_from_corp)}
+          title="กิจกรรมจากหน่วยงาน / คณะ"
+          events={filterNotOver(events).filter(
+            (event) => !!event?.is_from_corp
+          )}
           loading={loading}
         />
         <EventContainer
@@ -108,3 +118,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
